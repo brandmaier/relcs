@@ -6,7 +6,7 @@ simulateDataFromRELCS <- function(N, num.obs, autoregressionmean=.3, autoregress
                                slopevariance=0.1, interceptvariance=0.1,has.slope=TRUE, has.icept=TRUE) {
   
   data <- matrix(NA, nrow=N, ncol=num.obs)
-  population.model <- createDCSM(num.obs = num.obs,
+  population.model <- createLCS(num.obs = num.obs,
                                  autoregression = autoregressionmean,
                                  residualerrorvariance = residualerrorvariance,
                                  slopevariance = slopevariance,
