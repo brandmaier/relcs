@@ -16,13 +16,14 @@ set.seed(228825)
 
 simulation <- function(params) {
   
-  print(params)
+  #print(params)
   N <- params[1]
-  true.coupling <- params[2]
+  true_self_fb <- params[2]
+  true_self_fb_var <- params[3]
   
   # generate data from conventional LCS
-  data <- simulateDataFromRELCS(N=N, num.obs=5, autoregressionmean = true.coupling, 
-                                autoregressionvariance = 0.1,
+  data <- simulateDataFromRELCS(N=N, num.obs=5, autoregressionmean = true_self_fb, 
+                                autoregressionvariance = true_self_fb_var,
                                 residualerrorvariance = .1,
                                 slopevariance = .5,
                                 interceptvariance = .1)
@@ -32,11 +33,18 @@ simulation <- function(params) {
   fitted.model <- fit(model, data)
   summary(fitted.model)
   
-  est.coupling <- omxGetParameters(fitted.model)
+  param.object <- summary(fitted.model)$parameters
+  
+  result <- c(param.object$Estimate,param.object$Std.Error)
+  names(result) <- c( param.object$name, paste0("SE_",param.object$name))
+  
+  return(result)
+  #est.coupling <- omxGetParameters(fitted.model)
 }
 
-simulation.parameters <- expand.grid(N=c(50,100,200,500),true.coupling=seq(-.5,.5,length.out = 7), repetitions=1:100)
-#simulation.parameters <- expand.grid(N=c(50,100,200,500),true.coupling=seq(-.5,.5,length.out = 7), repetitions=1)
+#simulation.parameters <- expand.grid(N=c(50,100,200,500),true_self_fb=seq(-.5,.5,length.out = 7), repetitions=1:100)
+simulation.parameters <- expand.grid(N=c(50,100,200,500),true_self_fb=seq(-.5,.5,length.out = 7),
+                                     true_self_fb_var=c(0,0.001,0.01,0.1),repetitions=10)
 
 # sequential execution, or...
 #result = apply(X=simulation.parameters, 1, FUN=simulation)
@@ -56,7 +64,7 @@ end_time <- Sys.time()
 # attach results to simulation conditions
 full.result <- cbind(simulation.parameters,t(result))
 
-save(full.result,file="sim3-result.Rda")
+save(full.result,file="sim1-result.Rda")
 
 cat("Total computation time ", end_time-start_time,"\n")
 
@@ -66,7 +74,7 @@ cat("Total computation time ", end_time-start_time,"\n")
 aggregate(full.result, list(full.result$N),FUN=mean)
 
 # bias over true coupling
-aggregate(full.result, list(full.result$true.coupling),FUN=mean)
+aggregate(full.result, list(full.result$true_self_fb),FUN=mean)
 
 
 # Here, Rogier K. does his ggplot magic

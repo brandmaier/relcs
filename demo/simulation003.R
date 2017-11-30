@@ -18,25 +18,25 @@ simulation <- function(params) {
  
   print(params)
   N <- params[1]
-  true.coupling <- params[2]
+  true_self_fb <- params[2]
   
   # generate data from conventional LCS
- data <- simulateDataFromRELCS(N=N, num.obs=5, autoregressionmean = true.coupling, 
+ data <- simulateDataFromRELCS(N=N, num.obs=5, autoregressionmean = true_self_fb, 
                                 autoregressionvariance = 0.1,
                                 residualerrorvariance = .1,
                                 slopevariance = .5,
                                 interceptvariance = .1)
 
  # fit with random effects model
- model <- createLCS(num.obs = 5)
+ model <- createRELCS(num.obs = 5)
  fitted.model <- fit(model, data)
  summary(fitted.model)
 
  est.coupling <- omxGetParameters(fitted.model)
 }
 
-simulation.parameters <- expand.grid(N=c(50,100,200,500),true.coupling=seq(-.5,.5,length.out = 7), repetitions=1:100)
-#simulation.parameters <- expand.grid(N=c(50,100,200,500),true.coupling=seq(-.5,.5,length.out = 7), repetitions=1)
+simulation.parameters <- expand.grid(N=c(50,100,200,500),true_self_fb=seq(-.5,.5,length.out = 7), repetitions=1:100)
+#simulation.parameters <- expand.grid(N=c(50,100,200,500),true_self_fb=seq(-.5,.5,length.out = 7), repetitions=1)
 
 # sequential execution, or...
 #result = apply(X=simulation.parameters, 1, FUN=simulation)
@@ -66,7 +66,7 @@ cat("Total computation time ", end_time-start_time,"\n")
 aggregate(full.result, list(full.result$N),FUN=mean)
 
 # bias over true coupling
-aggregate(full.result, list(full.result$true.coupling),FUN=mean)
+aggregate(full.result, list(full.result$true_self_fb),FUN=mean)
 
 
 # Here, Rogier K. does his ggplot magic

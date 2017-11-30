@@ -27,13 +27,15 @@ createLCS <- function(num.obs, autoregression=.3, residualerrorvariance=.1,
   p1 <- mxPath(from=etas,to=manifests,free = FALSE,value=1, arrows=1)
   
   # residual variance
-  p2 <- mxPath(from=manifests,to=manifests,free=TRUE,labels="sigma_err",value=residualerrorvariance,arrows = 2)
+  p2 <- mxPath(from=manifests,to=manifests,free=TRUE,labels=pkg.globals$RESIDUAL_ERROR,
+               value=residualerrorvariance,arrows = 2)
   
   #from delta to eta
   p3 <- mxPath(from=deltas,etas[2:length(etas)],free=FALSE,value=1,arrows=1)
   
   # fixed AR
-  p4 <- mxPath(from=etas[1:(length(etas)-1)], to=etas[2:length(etas)], arrows=1,value=1, free=FALSE)
+  p4 <- mxPath(from=etas[1:(length(etas)-1)], to=etas[2:length(etas)], 
+               arrows=1,value=1, free=FALSE)
   
   # random to delta   ( definition variable paths)
   # p5 <- mxPath(from=randomar, to=deltas, arrow=1, labels=arlabels, free=FALSE)
@@ -42,8 +44,9 @@ createLCS <- function(num.obs, autoregression=.3, residualerrorvariance=.1,
   #  p6 <- mxPath(from=randomar,to=randomar, arrow=2, labels="ar_variance", free=TRUE, value=1)
   
   
-  p5 <- mxPath(from=etas[1:(length(etas)-1)], to=deltas[1:length(deltas)], arrows=1,value=autoregression, free=TRUE,
-               label="ar_mu")
+  p5 <- mxPath(from=etas[1:(length(etas)-1)], to=deltas[1:length(deltas)],
+               arrows=1,value=autoregression, free=TRUE,
+               label=pkg.globals$SELF_FEEDBACK_FE)
   
   
   # mean to first
@@ -56,10 +59,12 @@ createLCS <- function(num.obs, autoregression=.3, residualerrorvariance=.1,
   p9 <- mxPath(from=randomslp, to=deltas, arrow=1, free=FALSE, value=1)
   
   # mu to random slope
-  p10 <- mxPath(from="one",to=randomslp, arrow=1,free=TRUE, labels="slope_mu", value=0)
+  p10 <- mxPath(from="one",to=randomslp, arrow=1,free=TRUE, 
+                labels=pkg.globals$SLOPE_FE, value=0)
   
   # random slope variance
-  p11 <- mxPath(from=randomslp, to=randomslp,arrows=2,free=TRUE,labels="slope_variance", value=slopevariance)
+  p11 <- mxPath(from=randomslp, to=randomslp,arrows=2,free=TRUE,
+                labels=pkg.globals$SLOPE_RE, value=slopevariance)
   
   if (!has.slope) {
     p9 <- NULL
@@ -70,7 +75,8 @@ createLCS <- function(num.obs, autoregression=.3, residualerrorvariance=.1,
   # random icept variance
   if (has.icept) {
     p12 <- mxPath(from=randomicept, to=etas[1],arrows=1, free=FALSE)
-    p13 <- mxPath(from=randomicept, to=randomicept, arrows=2, free=TRUE, value=interceptvariance, labels="icept_variance")
+    p13 <- mxPath(from=randomicept, to=randomicept, arrows=2, free=TRUE,
+                  value=interceptvariance, labels=pkg.globals$INTERCEPT_RE)
   } else {
     p12 <- NULL
     p13 <- NULL

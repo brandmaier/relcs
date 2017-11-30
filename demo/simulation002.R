@@ -17,10 +17,10 @@ set.seed(32598)
 simulation <- function(params) {
 
   N <- params[1]
-  true.coupling <- params[2]
+  true_self_fb <- params[2]
   
   # generate data from conventional LCS
- model <- createLCS(num.obs = 5,autoregression = true.coupling)
+ model <- createLCS(num.obs = 5,autoregression = true_self_fb)
  data <- simulateData(model, N=N)
 
  # fit with random effects model
@@ -31,7 +31,7 @@ simulation <- function(params) {
  est.coupling <- omxGetParameters(fitted.model)
 }
 
-simulation.parameters <- expand.grid(N=c(50,100,200,500),true.coupling=seq(-.5,.5,length.out = 7), repetitions=1:1)
+simulation.parameters <- expand.grid(N=c(50,100,200,500),true_self_fb=seq(-.5,.5,length.out = 7), repetitions=1:1)
 
 # sequential execution, or...
 #result = apply(X=simulation.parameters, 1, FUN=simulation)
@@ -51,7 +51,7 @@ end_time <- Sys.time()
 # attach results to simulation conditions
 full.result <- cbind(simulation.parameters,t(result))
 
-save(full.result,file="sim1-result.Rda")
+save(full.result,file="sim2-result.Rda")
 
 cat("Total computation time ", end_time-start_time,"\n")
 
@@ -61,7 +61,7 @@ cat("Total computation time ", end_time-start_time,"\n")
 aggregate(full.result, list(full.result$N),FUN=mean)
 
 # bias over true coupling
-aggregate(full.result, list(full.result$true.coupling),FUN=mean)
+aggregate(full.result, list(full.result$true_self_fb),FUN=mean)
 
 
 # Here, Rogier K. does his ggplot magic
