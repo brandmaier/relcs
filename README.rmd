@@ -1,0 +1,26 @@
+relcs
+======
+
+```{r echo=FALSE}
+knitr::opts_chunk$set(
+  comment = "#>",
+  collapse = TRUE
+)
+```
+
+### What is this?
+
+Random Effects Latent Change Score models.
+
+### Install
+
+Devel version from github
+
+```{r eval=FALSE}
+install.packages("devtools")
+devtools::install_github("brandmaier/relcs")
+```
+
+```{r}
+library("relcs")
+```

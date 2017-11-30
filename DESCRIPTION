@@ -1,0 +1,15 @@
+Package: relcs
+Type: Package
+Title: Random Effect Latent Change Score models
+Version: 0.1
+Date: 2017-11-30
+Author: Andreas M. Brandmaier, Rogier Kievit
+Authors@R: c(person("Andreas", "Brandmaier", role=c("aut","cre"), email="brandmaier@mpib-berlin.mpg.de", comment=c(ORCID='0000-0001-8765-6982')), person("Rogier","Kievit",role="aut", email=""))
+Maintainer: Andreas M. Brandmaier <brandmaier@mpib-berlin.mpg.de>
+Description: Random Effect Latent Change Score models. Pronounce as 'relax'.
+License: GPL (>=3)
+Depends:
+    parallel,
+    MASS,
+    OpenMx
+RoxygenNote: 5.0.1
