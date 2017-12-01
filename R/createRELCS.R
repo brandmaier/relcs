@@ -101,7 +101,7 @@ createRELCS <- function(num.obs, ar.variance=TRUE, first.obs.var.unique=FALSE,
   # random icept variance
   if (has.icept) {
     p14 <- mxPath(from=randomicept, to=etas[1],arrows=1, free=FALSE) # TODO?
-    p15 <- mxPath(from=randomicept, to=randomicept, arrows=2, free=TRUE, value=1, labels=pkg.globals$INTERCEPT_RE)
+    p15 <- mxPath(from=randomicept, to=randomicept, arrows=2, free=TRUE, values=1, labels=pkg.globals$INTERCEPT_RE)
   } else {
     p14 <- NULL
     p15 <- NULL

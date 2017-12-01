@@ -4,6 +4,8 @@
 # Generate data from RELCS model and fit with RELCS model
 #
 
+num.trials <- 1000
+
 # install from github if necessary
 #devtools::install_github("brandmaier/relcs")
 
@@ -44,7 +46,7 @@ simulation <- function(params) {
 
 #simulation.parameters <- expand.grid(N=c(50,100,200,500),true_self_fb=seq(-.5,.5,length.out = 7), repetitions=1:100)
 simulation.parameters <- expand.grid(N=c(50,100,200,500),true_self_fb=seq(-.5,.5,length.out = 7),
-                                     true_self_fb_var=c(0,0.001,0.01,0.1),repetitions=10)
+                                     true_self_fb_var=c(0,0.001,0.01,0.1),repetitions=1:num.trials)
 
 # sequential execution, or...
 #result = apply(X=simulation.parameters, 1, FUN=simulation)

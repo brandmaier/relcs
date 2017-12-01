@@ -13,6 +13,7 @@ simulateDataFromRELCS <- function(N, num.obs, autoregressionmean=.3,
                                  autoregression = autoregressionmean,
                                  residualerrorvariance = residualerrorvariance,
                                  slopevariance = slopevariance,
+                                interceptvariance = interceptvariance,
                                  has.slope = has.slope,has.icept = has.icept)
   
   for (i in 1:N) {

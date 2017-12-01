@@ -4,6 +4,8 @@
 # Generate data from RELCS model and fit with LCS model
 #
 
+num.trials <- 1000
+
 # install from github if necessary
 #devtools::install_github("brandmaier/relcs")
 
@@ -35,7 +37,7 @@ simulation <- function(params) {
  est.coupling <- omxGetParameters(fitted.model)
 }
 
-simulation.parameters <- expand.grid(N=c(50,100,200,500),true_self_fb=seq(-.5,.5,length.out = 7), repetitions=1:100)
+simulation.parameters <- expand.grid(N=c(50,100,200,500),true_self_fb=seq(-.5,.5,length.out = 7), repetitions=1:num.trials)
 #simulation.parameters <- expand.grid(N=c(50,100,200,500),true_self_fb=seq(-.5,.5,length.out = 7), repetitions=1)
 
 # sequential execution, or...

@@ -7,6 +7,8 @@
 # install from github if necessary
 #devtools::install_github("brandmaier/relcs")
 
+num.trials <- 1
+
 # load package
 require(relcs)
 require(OpenMx)
@@ -28,10 +30,17 @@ simulation <- function(params) {
  fitted.model <- fit(model, data)
  summary(fitted.model)
 
- est.coupling <- omxGetParameters(fitted.model)
+ #est.coupling <- omxGetParameters(fitted.model)
+ 
+ param.object <- summary(fitted.model)$parameters
+ 
+ result <- c(param.object$Estimate,param.object$Std.Error)
+ names(result) <- c( param.object$name, paste0("SE_",param.object$name))
+ 
+ return(result)
 }
 
-simulation.parameters <- expand.grid(N=c(50,100,200,500),true_self_fb=seq(-.5,.5,length.out = 7), repetitions=1:1)
+simulation.parameters <- expand.grid(N=c(50,100,200,500),true_self_fb=seq(-.5,.5,length.out = 7), repetitions=1:num.trials)
 
 # sequential execution, or...
 #result = apply(X=simulation.parameters, 1, FUN=simulation)
