@@ -50,8 +50,11 @@ simulation.parameters <- expand.grid(N=c(50,100,200,500),true_self_fb=seq(-.5,.5
 
 start_time <- Sys.time()
 
+cores <- Sys.getenv("PBS_NUM_PPN")
+cores <- if (cores == '') parallel::detectCores()-1 else as.numeric(cores)
+
 # ...or parallel execution
-cl = makeCluster(parallel::detectCores()-1)
+cl = makeCluster(cores)
 parallel::clusterExport(cl, "simulation")
 parallel::clusterEvalQ(cl, library(relcs))
 parallel::clusterEvalQ(cl, library(OpenMx))
