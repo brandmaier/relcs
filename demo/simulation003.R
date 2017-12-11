@@ -53,6 +53,8 @@ start_time <- Sys.time()
 cores <- Sys.getenv("PBS_NUM_PPN")
 cores <- if (cores == '') parallel::detectCores()-1 else as.numeric(cores)
 
+cat("Using ",cores, " CPUS\n")
+
 # ...or parallel execution
 cl = makeCluster(cores)
 parallel::clusterExport(cl, "simulation")
