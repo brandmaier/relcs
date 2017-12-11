@@ -22,11 +22,12 @@ simulation <- function(params) {
   true_self_fb <- params[2]
   
   # generate data from conventional LCS
- model <- createLCS(num.obs = 5,autoregression = true_self_fb)
+ model <- createLCS(num.obs = 5,autoregression = true_self_fb, has.icept = FALSE,
+                    has.slope=FALSE, has.latent=FALSE)
  data <- simulateData(model, N=N)
 
  # fit with random effects model
- model <- createRELCS(num.obs = 5)
+ model <- createRELCS(num.obs = 5, has.icept = FALSE, has.slope = FALSE, has.latent=FALSE)
  fitted.model <- fit(model, data)
  summary(fitted.model)
 

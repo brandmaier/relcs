@@ -10,7 +10,8 @@
 #' @export
 #' 
 createRELCS <- function(num.obs, ar.variance=TRUE, first.obs.var.unique=FALSE, 
-                                slope.ar.cov=FALSE, has.slope=TRUE, has.icept=TRUE) {
+                                slope.ar.cov=FALSE, has.slope=TRUE, has.icept=TRUE,
+                        has.latent=TRUE) {
   
   manifests<- paste0("X",1:num.obs)
   
@@ -18,25 +19,42 @@ createRELCS <- function(num.obs, ar.variance=TRUE, first.obs.var.unique=FALSE,
   randomslp <- "slope"
   randomicept <- "icept"
   deltas <- paste0("delta",1:(num.obs-1))
-  etas <- paste0("eta",1:num.obs)
+  
+  if (has.latent)
+    etas <- paste0("eta",1:num.obs)
+  else
+    etas <- NULL
+  
   arlabels <- paste0("data.X",1:length(deltas))
   
   latents<- c(etas, deltas, randomar)
   if (has.slope) latents <- c(latents, randomslp)
   if (has.icept) latents <- c(latents, randomicept)
-  # from eta to manifest
-  p1 <- mxPath(from=etas,to=manifests,free = FALSE,value=1, arrows=1)
+
+  
+    # from eta to manifest
+  if (has.latent)
+    p1 <- mxPath(from=etas,to=manifests,free = FALSE,value=1, arrows=1)
+  else
+    p1 <- NULL
   
   # residual variance
   p2 <- mxPath(from=manifests,to=manifests,free=TRUE,
                labels=pkg.globals$RESIDUAL_ERROR,value=0.1,arrows = 2)
   
   #from delta to eta
-  p3 <- mxPath(from=deltas,etas[2:length(etas)],free=FALSE,value=1,arrows=1)
+  if (has.latent)
+    p3 <- mxPath(from=deltas,etas[2:length(etas)],free=FALSE,value=1,arrows=1)
+  else 
+    p3 <- mxPath(from=deltas,manifests[2:length(manifests)],free=FALSE,value=1,arrows=1)    
   
   # fixed AR
-  p4 <- mxPath(from=etas[1:(length(etas)-1)], 
+  if (has.latent) 
+    p4 <- mxPath(from=etas[1:(length(etas)-1)], 
                to=etas[2:length(etas)], arrows=1,value=1, free=FALSE)
+  else
+    p4 <- mxPath(from=manifests[1:(length(manifests)-1)], 
+                 to=manifests[2:length(manifests)], arrows=1,value=1, free=FALSE)
   
   # random to delta   ( definition variable paths)
   p5 <- mxPath(from=randomar, to=deltas, arrow=1, labels=arlabels, free=FALSE)
@@ -56,7 +74,10 @@ createRELCS <- function(num.obs, ar.variance=TRUE, first.obs.var.unique=FALSE,
   }
   
   # mean to first
-  p7 <- mxPath(from="one", to=etas[1],free=TRUE,arrows=1,label=pkg.globals$INTERCEPT_FE)
+  if (has.latent)
+    p7 <- mxPath(from="one", to=etas[1],free=TRUE,arrows=1,label=pkg.globals$INTERCEPT_FE)
+  else
+    p7 <- NULL
   
   # mean to ar
   p8 <- mxPath(from="one", to=randomar,arrow=1,
@@ -107,7 +128,7 @@ createRELCS <- function(num.obs, ar.variance=TRUE, first.obs.var.unique=FALSE,
     p15 <- NULL
   }
   
-  model <- mxModel("AugmentedLCSmodel", 
+  model <- mxModel("RELCSmodel", 
                    type="RAM",
                    manifestVars = manifests,
                    latentVars = latents,

@@ -6,7 +6,8 @@ simulateDataFromRELCS <- function(N, num.obs, autoregressionmean=.3,
                                   autoregressionvariance=.1, 
                                   residualerrorvariance=.1, 
                                   slopevariance=0.1, interceptvariance=0.1,
-                                  has.slope=TRUE, has.icept=TRUE) {
+                                  has.slope=TRUE, has.icept=TRUE,
+                                  has.latent=TRUE) {
   
   data <- matrix(NA, nrow=N, ncol=num.obs)
   population.model <- createLCS(num.obs = num.obs,
@@ -14,7 +15,8 @@ simulateDataFromRELCS <- function(N, num.obs, autoregressionmean=.3,
                                  residualerrorvariance = residualerrorvariance,
                                  slopevariance = slopevariance,
                                 interceptvariance = interceptvariance,
-                                 has.slope = has.slope,has.icept = has.icept)
+                                 has.slope = has.slope,has.icept = has.icept,
+                                has.latent)
   
   for (i in 1:N) {
     sfb <- rnorm(1,mean = autoregressionmean, sd = sqrt(autoregressionvariance))

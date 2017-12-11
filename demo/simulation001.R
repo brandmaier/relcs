@@ -27,11 +27,14 @@ simulation <- function(params) {
   data <- simulateDataFromRELCS(N=N, num.obs=5, autoregressionmean = true_self_fb, 
                                 autoregressionvariance = true_self_fb_var,
                                 residualerrorvariance = .1,
-                                slopevariance = .5,
-                                interceptvariance = .1)
+                                slopevariance = .5, 
+                                interceptvariance = .1,
+                                has.icept =  FALSE,
+                                has.slope = FALSE,
+                                has.latent = FALSE)
   
   # fit with random effects model
-  model <- createRELCS(num.obs = 5)
+  model <- createRELCS(num.obs = 5, has.icept = FALSE, has.slope = FALSE, has.latent=FALSE)
   fitted.model <- fit(model, data)
   summary(fitted.model)
   
