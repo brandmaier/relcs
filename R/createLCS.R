@@ -11,7 +11,9 @@
 createLCS <- function(num.obs, autoregression=.3, residualerrorvariance=.1, 
                        slopevariance=0.1, interceptvariance=0.1, interceptmu=0,
                       slopemu = 0,
-                      has.slope=TRUE, has.icept=TRUE, has.latent=TRUE) {
+                      has.slope=TRUE, has.icept=TRUE) {
+  
+  has.latent = TRUE
   
   manifests<- paste0("X",1:num.obs)
   

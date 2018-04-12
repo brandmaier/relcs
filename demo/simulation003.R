@@ -3,8 +3,23 @@
 #
 # Generate data from RELCS model and fit with LCS model
 #
+# Expectation: The true process has variation in the self-feedback but we are using
+#   a fixed-effects-only model. Average feedback should be estimated okayish but
+#   probably the true variation decreases precision of estimates, particularly, 
+#   residual error (?)
+#
 
-num.trials <- 1000
+num.trials <- 1
+
+# b)
+simulation.parameters <- expand.grid(N=c(50,100,200,500),
+                                     true_self_fb=seq(-.5,.5,length.out = 7), 
+                                     repetitions=1:num.trials)
+
+# c) other model-specification-related parameters
+
+has.latent <- FALSE
+
 
 # install from github if necessary
 #devtools::install_github("brandmaier/relcs")
@@ -28,21 +43,18 @@ simulation <- function(params) {
                                 residualerrorvariance = .1,
                                 slopevariance = .5,
                                 interceptvariance = .1,
-                                has.icept = FALSE,
-                               has.slope = FALSE,
-                               has.latent=FALSE)
+                                has.icept = TRUE,
+                               has.slope = TRUE)
 
  # fit with random effects model
- model <- createRELCS(num.obs = 5, has.icept = FALSE,
-                      has.slope = FALSE,
-                      has.latent=FALSE)
+ model <- createRELCS(num.obs = 5, has.icept = TRUE,
+                      has.slope = TRUE)
  fitted.model <- fit(model, data)
  summary(fitted.model)
 
  est.coupling <- omxGetParameters(fitted.model)
 }
 
-simulation.parameters <- expand.grid(N=c(50,100,200,500),true_self_fb=seq(-.5,.5,length.out = 7), repetitions=1:num.trials)
 #simulation.parameters <- expand.grid(N=c(50,100,200,500),true_self_fb=seq(-.5,.5,length.out = 7), repetitions=1)
 
 # sequential execution, or...
@@ -57,7 +69,7 @@ cat("Using ",cores, " CPUS\n")
 
 # ...or parallel execution
 cl = makeCluster(cores)
-parallel::clusterExport(cl, "simulation")
+parallel::clusterExport(cl, c("simulation"))
 parallel::clusterEvalQ(cl, library(relcs))
 parallel::clusterEvalQ(cl, library(OpenMx))
 result = parApply(cl=cl, X = simulation.parameters, 1, FUN=simulation)
