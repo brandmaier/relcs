@@ -95,8 +95,9 @@ createLCS <- function(num.obs, autoregression=.3, residualerrorvariance=.1,
                 labels=pkg.globals$SLOPE_RE, value=slopevariance)
   
   if (!has.slope) {
-    p9 <- mxPath(from=deltas,to=deltas,arrows=2,free=TRUE,labels=pkg.globals$SLOPE_FE,
-                 connect = "single")
+    # each delta has its own variance
+    p9 <- NULL# mxPath(from=deltas,to=deltas,arrows=2,free=TRUE,value=0,
+               #  connect = "single")
     p11 <- NULL
   }
   

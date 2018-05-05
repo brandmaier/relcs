@@ -8,17 +8,19 @@
 #
 # Here are a couple of simulation parameters that can be easily adjusted:
 
+parallel <- TRUE
+
 # a) number of MC trials per condition
 num.trials <- 1000
 
 # b)
 simulation.parameters <- expand.grid(
   # sample size conditions
-  N=c(50,100,200,500),
-  #N=200,
+  #N=c(50,100,200,500),
+  N=200,
   # Self-feedback range to test
-  true_self_fb=seq(-.5,.5,length.out = 7),
-#  true_self_fb=.1,
+#  true_self_fb=seq(-.5,.5,length.out = 7),
+  true_self_fb=.1,
   # Self-feedback variance
   true_self_fb_var=c(0,0.001,0.01,0.1),
   # Number of observations
@@ -46,7 +48,8 @@ set.seed(228825)
 
 simulation <- function(params) {
   
-  #print(params)
+  #
+  print(params)
   N <- params[1]
   true_self_fb <- params[2]
   true_self_fb_var <- params[3]
@@ -58,8 +61,8 @@ simulation <- function(params) {
                                 residualerrorvariance = .1,
                                 slopevariance = .5, 
                                 interceptvariance = .1,
-                                has.icept =  FALSE,
-                                has.slope = FALSE)
+                                has.icept =  TRUE,
+                                has.slope = TRUE)
   
   # fit with random effects model
   model <- createRELCS(num.obs = num.obs, has.icept = TRUE, has.slope = TRUE)
@@ -89,12 +92,16 @@ cat("Using ",cores, " CPUS\n")
 
 
 # ...or parallel execution
-cl = makeCluster(cores)
-parallel::clusterExport(cl, c("simulation"))
-parallel::clusterEvalQ(cl, library(relcs))
-parallel::clusterEvalQ(cl, library(OpenMx))
-result = parApply(cl=cl, X = simulation.parameters, 1, FUN=simulation)
-parallel::stopCluster(cl)
+if (parallel) {
+  cl = makeCluster(cores)
+  parallel::clusterExport(cl, c("simulation"))
+  parallel::clusterEvalQ(cl, library(relcs))
+  parallel::clusterEvalQ(cl, library(OpenMx))
+  result = parApply(cl=cl, X = simulation.parameters, 1, FUN=simulation)
+  parallel::stopCluster(cl)
+} else {
+  result = apply(X = simulation.parameters, 1, FUN=simulation)
+}
 
 end_time <- Sys.time()
 
