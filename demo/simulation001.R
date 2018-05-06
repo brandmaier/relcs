@@ -8,7 +8,7 @@
 #
 # Here are a couple of simulation parameters that can be easily adjusted:
 
-mypath = "/home/mpib/brandmaier/"
+mypath = "./" # "/home/mpib/brandmaier/"
 
 parallel <- TRUE
 

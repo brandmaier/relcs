@@ -8,7 +8,7 @@
 #   probably the true variation decreases precision of estimates, particularly, 
 #   residual error (?)
 #
-mypath = "/home/mpib/brandmaier/"
+mypath = "./" #"/home/mpib/brandmaier/"
 
 parallel <- TRUE
 

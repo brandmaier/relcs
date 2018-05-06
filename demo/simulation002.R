@@ -10,7 +10,7 @@
 
 # install from github if necessary
 #devtools::install_github("brandmaier/relcs")
-mypath = "/home/mpib/brandmaier/"
+mypath = "./" #/home/mpib/brandmaier/"
 
 parallel <- TRUE
 
