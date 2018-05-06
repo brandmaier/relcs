@@ -40,6 +40,10 @@ set.seed(4519967)
 
 simulation <- function(params) {
  
+  require(relcs)
+  require(OpenMx)
+  
+  
   print(params)
   N <- params[1]
   true_self_fb <- params[2]
@@ -95,8 +99,8 @@ cat("Using ",cores, " CPUS\n")
 if (parallel) {
   cl = makeCluster(cores)
   parallel::clusterExport(cl, c("simulation"))
-  parallel::clusterEvalQ(cl, library(relcs))
-  parallel::clusterEvalQ(cl, library(OpenMx))
+#  parallel::clusterEvalQ(cl, library(relcs))
+#  parallel::clusterEvalQ(cl, library(OpenMx))
   result = parApply(cl=cl, X = simulation.parameters, 1, FUN=simulation)
   parallel::stopCluster(cl)
 } else {
