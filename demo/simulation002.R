@@ -10,6 +10,7 @@
 
 # install from github if necessary
 #devtools::install_github("brandmaier/relcs")
+mypath = "/home/mpib/brandmaier/"
 
 parallel <- TRUE
 
@@ -93,7 +94,7 @@ end_time <- Sys.time()
 # attach results to simulation conditions
 full.result <- cbind(simulation.parameters,t(result))
 
-save(full.result,file="sim2-result.Rda")
+save(full.result,file=paste0(mypath,"sim2-result.Rda"))
 
 cat("Total computation time ", end_time-start_time,"\n")
 

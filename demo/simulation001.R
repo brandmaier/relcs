@@ -8,6 +8,8 @@
 #
 # Here are a couple of simulation parameters that can be easily adjusted:
 
+mypath = "/home/mpib/brandmaier/"
+
 parallel <- TRUE
 
 # a) number of MC trials per condition
@@ -114,7 +116,7 @@ cat("Total computation time ", end_time-start_time,"\n")
 
 full.result <- cbind(simulation.parameters,t(result))
 
-save(full.result,file="sim1-result.Rda")
+save(full.result,file=paste0(mypath,"sim1-result.Rda"))
 
 
 
