@@ -18,11 +18,11 @@ num.trials <- 1000
 # b)
 simulation.parameters <- expand.grid(
   # sample size conditions
-  #N=c(50,100,200,500),
-  N=200,
+  N=c(50,100,200,500),
+#  N=200,
   # Self-feedback range to test
-#  true_self_fb=seq(-.5,.5,length.out = 7),
-  true_self_fb=.1,
+  true_self_fb=seq(-.5,.5,length.out = 7),
+#  true_self_fb=.1,
   # Self-feedback variance
   true_self_fb_var=c(0,0.001,0.01,0.1),
   # Number of observations
