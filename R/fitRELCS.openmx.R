@@ -1,9 +1,14 @@
 #' @export
-fitRELCS.openmx <- function(num.obs, data) {
+fitRELCS.openmx <- function(num.obs, data, has.slope=FALSE, no.run=FALSE) {
   
-  model <-  createRELCS(num.obs)
+  model <-  createRELCS(num.obs,has.slope = has.slope)
   model <- mxModel(model, mxData(data, type="raw"))
-  lcs.out <- mxRun(model)
+  
+  if (no.run) {
+    lcs.out <- model
+  } else {
+    lcs.out <- mxRun(model)
+  }
   
   result <- list()
   result$fit <- lcs.out

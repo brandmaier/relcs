@@ -12,5 +12,6 @@ Depends:
     parallel,
     MASS,
     OpenMx,
-    rstan
+    rstan,
+    ggplot2
 RoxygenNote: 5.0.1

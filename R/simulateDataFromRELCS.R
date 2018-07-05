@@ -2,8 +2,8 @@
 #'
 #'
 #' @export
-simulateDataFromRELCS <- function(N, num.obs, autoregressionmean=.3, 
-                                  autoregressionvariance=.1, 
+simulateDataFromRELCS <- function(N, num.obs, selffeedback.mean=.3, 
+                                  selffeedback.variance=.1, 
                                   residualerrorvariance=.1, 
                                   slopevariance=0.0, slopemu=0, interceptvariance=0.1, interceptmu=4,
                                   has.slope=TRUE, has.icept=TRUE, use.openmx=FALSE) {
@@ -13,7 +13,7 @@ simulateDataFromRELCS <- function(N, num.obs, autoregressionmean=.3,
   
   data <- matrix(NA, nrow=N, ncol=num.obs)
   population.model <- createLCS(num.obs = num.obs,
-                                 autoregression = autoregressionmean,
+                                 autoregression = selffeedback.mean,
                                  residualerrorvariance = residualerrorvariance,
                                  slopevariance = slopevariance,
                                 slopemu = slopemu, interceptmu = interceptmu,
@@ -21,7 +21,7 @@ simulateDataFromRELCS <- function(N, num.obs, autoregressionmean=.3,
                                  has.slope = has.slope,has.icept = has.icept)
   
   for (i in 1:N) {
-    sfb <- rnorm(1,mean = autoregressionmean, sd = sqrt(autoregressionvariance))
+    sfb <- rnorm(1,mean = selffeedback.mean, sd = sqrt(selffeedback.variance))
     
     population.model <- omxSetParameters(population.model,
                                          labels = pkg.globals$SELF_FEEDBACK_FE,
@@ -57,7 +57,7 @@ simulateDataFromRELCS <- function(N, num.obs, autoregressionmean=.3,
         if(t == 1){
           ly[t] <- b_0i
         }else{
-          dy[t-1] <- rnorm(1,autoregressionmean,sqrt(autoregressionvariance))*ly[t-1]# + b_1i
+          dy[t-1] <- rnorm(1,selffeedback.mean,sqrt(selffeedback.variance))*ly[t-1]# + b_1i
           ly[t] <- ly[t-1] + dy[t-1]
         }
         data[i,t] <- ly[t] + sqrt(sigma2_u)*rnorm(1)
