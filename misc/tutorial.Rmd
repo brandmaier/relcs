@@ -10,9 +10,9 @@ In this tutorial, we are going to demonstrate the relcs package. Using relcs, yo
 
 First, download the package from GitHub and attach it to your workspace:
 
-```{r}
+```{r init, eval=TRUE,echo=TRUE,message=FALSE}
 require("relcs")
-set.seed(1234)
+set.seed(54321)
 ```
 
 Let's start with simulating some data from a latent change score model. Here, we assume proportional change (mean=.2) and individual differences in the proportional change (variance=.1). We assume no additional linear slope over time. Residual error variance is set to 2.
@@ -23,13 +23,13 @@ num.obs <- 5
 
 simulated.data <- relcs::simulateDataFromRELCS(N,num.obs,selffeedback.mean = .2, 
                                                selffeedback.variance = .1,has.slope = FALSE,
-                                               residualerrorvariance = 2)
+                                               residualerrorvariance = 1)
 
 summary(simulated.data)
 ```
 
 Let's first create a long version of our simulated data set, which we will use for plotting shortly. The tidyr package is a great helper for this task.
-```{r}
+```{r shape,message=FALSE}
 library(tidyr)
 simulated.data <- cbind(ID=rep(1:N), simulated.data)
 long.simulated.data <- gather(data = simulated.data,X,value,-ID)
@@ -38,7 +38,7 @@ long.simulated.data$ID <- as.factor(long.simulated.data$ID)
 
 We'll use the amazing ggplot2 library to plot the data
 
-```{r}
+```{r plotstuff,message=FALSE}
 require("ggplot2")
 library("ggthemes")
 subdata <- long.simulated.data
@@ -48,7 +48,7 @@ ggplot(data=subdata,aes(x=X,y=value,color=ID,group=ID))+geom_line()+   guides(co
 
 Now, we will fit a RELCS model. Yes, this is really all you need to do:
 
-```{r run_model,echo=FALSE,eval=TRUE}
+```{r run_model,echo=TRUE,eval=TRUE,message=FALSE,warning=FALSE}
 require(relcs)
 fitted.model <- fitRELCS(data=simulated.data)
 ```
@@ -76,7 +76,7 @@ missing.data <- miss.mat * simulated.data
 
 And again, we simply pass this data object to fitRELCS and it will handle the missing data appropriately:
 
-```{r run_model_missing, eval=TRUE,echo=FALSE}
+```{r run_model_missing, eval=TRUE,echo=FALSE,message=FALSE,warning=FALSE}
 require(relcs)
 fitted.model <- fitRELCS(data=missing.data, type="stan")
 ```

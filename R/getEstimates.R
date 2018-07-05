@@ -3,13 +3,24 @@ getEstimates <- function(x) {
   result <- list()
   class(result) <- "relcs.estimates"
   
+  if(!inherits(x,"relcs.fitted")) {
+    warning("Function can only handle relcs.fitted models")
+    return(NULL)
+  }
+  
+  if (is.null(x) | is.null(x$fit)) {
+    warning("Unknown or broken object passed to getEstimates()")
+        return(NULL)
+  }
+  
   if (x$language == "stan") {
     
-    if (any(summary(x$fit)$summary[,"Rhat"]>1.1)) {
+    if (any(rstan::summary(x$fit)$summary[,"Rhat"]>1.1)) {
       warning("At least one Rhat value is greater than 1.1. It is recommended to increase the number of iterations.\n")
     }
     
-    posterior.means <- summary(x$fit)$summary[,"mean"]
+    posterior.means <- rstan::
+      summary(x$fit)$summary[,"mean"]
     
     # suppress output of "lp__
     if (any(names(posterior.means)=="lp__")) {

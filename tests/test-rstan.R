@@ -4,8 +4,8 @@ num.obs <- 5
 N <- 500
 
 # create data
-sdata <- relcs::simulateDataFromRELCS(N=500, num.obs = num.obs,autoregressionmean = .2,
-                             autoregressionvariance = .05,residualerrorvariance = 1,
+sdata <- relcs::simulateDataFromRELCS(N=500, num.obs = num.obs,selffeedback.mean = .2,
+                              selffeedback.variance = .05,residualerrorvariance = 1,
                              slopemu = 0, slopevariance = 0, interceptmu = 5, interceptvariance = 1,
                              has.slope=FALSE)
 

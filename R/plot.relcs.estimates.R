@@ -12,5 +12,7 @@ plot.relcs.estimates <- function(x) {
 
 #' @S3method print relcs.estimates
 print.relcs.estimates <- function(x) {
-  print(x$estimate)
+  
+  if (!is.null(x))
+    print(x$estimate)
 }  
