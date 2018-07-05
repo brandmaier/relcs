@@ -5,8 +5,8 @@
 \title{Create Latent Change Score Model}
 \usage{
 createLCS(num.obs, autoregression = 0.3, residualerrorvariance = 0.1,
-  slopevariance = 0.1, interceptvariance = 0.1, has.slope = TRUE,
-  has.icept = TRUE)
+  slopevariance = 0.1, interceptvariance = 0.1, interceptmu = 0,
+  slopemu = 0, has.slope = TRUE, has.icept = TRUE)
 }
 \description{
 Create Latent Change Score Model

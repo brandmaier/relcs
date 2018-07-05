@@ -6,8 +6,9 @@
 \usage{
 simulateDataFromRELCS(N, num.obs, autoregressionmean = 0.3,
   autoregressionvariance = 0.1, residualerrorvariance = 0.1,
-  slopevariance = 0.1, interceptvariance = 0.1, has.slope = TRUE,
-  has.icept = TRUE)
+  slopevariance = 0, slopemu = 0, interceptvariance = 0.1,
+  interceptmu = 4, has.slope = TRUE, has.icept = TRUE,
+  use.openmx = FALSE)
 }
 \description{
 Simulate Data from RELCS model

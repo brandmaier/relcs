@@ -4,8 +4,9 @@
 \alias{createRELCS}
 \title{Create Random Effects Latent Change Score Model}
 \usage{
-createRELCS(num.obs, ar.variance = TRUE, first.obs.var.unique = FALSE,
-  slope.ar.cov = FALSE, has.slope = TRUE, has.icept = TRUE)
+createRELCS(num.obs, has.random.self_fb = TRUE,
+  first.obs.var.unique = FALSE, slope.ar.cov = FALSE, has.slope = TRUE,
+  has.icept = TRUE)
 }
 \description{
 Create Random Effects Latent Change Score Model
