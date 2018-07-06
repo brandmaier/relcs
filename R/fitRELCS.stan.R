@@ -6,10 +6,14 @@ create_default_priors <- function() {
 
 #'
 #' @export
-fitRELCS.stan <- function(num.obs, data, cores=3, chains=3, iter=500, algorithm="NUTS",
-                          seed=sample.int(.Machine$integer.max, 1), warmup=100, control=NULL,
+fitRELCS.stan <- function(num.obs, data, cores=3, chains=3, iter=600, algorithm="NUTS",
+                          seed=sample.int(.Machine$integer.max, 1), warmup=200, control=NULL,
                           priors=create_default_priors(), no.run=FALSE, has.slope=FALSE, ...)
 {
+  
+#if (is.null(control)) {
+#  control=list(adapt_delta=0.99,max_treedepth=20)
+#}
   
 missing.part1 <- "int<lower=0> Ncomp; // Number of non-missing values
 int<lower=0> Nmiss; // Number of missing values

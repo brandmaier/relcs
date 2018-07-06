@@ -2,10 +2,10 @@
 #'
 #'
 #' @export
-simulateDataFromRELCS <- function(N, num.obs, selffeedback.mean=.3, 
-                                  selffeedback.variance=.1, 
-                                  residualerrorvariance=.1, 
-                                  slopevariance=0.0, slopemu=0, interceptvariance=0.1, interceptmu=4,
+simulateDataFromRELCS <- function(N, num.obs, selffeedback.mean=0, 
+                                  selffeedback.variance=0, 
+                                  residualerrorvariance=1, 
+                                  slopevariance=0.0, slopemu=0, interceptvariance=0.0, interceptmu=0,
                                   has.slope=TRUE, has.icept=TRUE, use.openmx=FALSE) {
   
 

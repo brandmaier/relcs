@@ -19,8 +19,7 @@ getEstimates <- function(x) {
       warning("At least one Rhat value is greater than 1.1. It is recommended to increase the number of iterations.\n")
     }
     
-    posterior.means <- rstan::
-      summary(x$fit)$summary[,"mean"]
+    posterior.means <- rstan::summary(x$fit)$summary[,"mean"]
     
     # suppress output of "lp__
     if (any(names(posterior.means)=="lp__")) {

@@ -17,7 +17,7 @@ iter <- 200
 algorithm <- "NUTS"
 #algorithm <- "HMC"
 result <- fitRELCS.stan(num.obs = num.obs, data=sdata, iter=iter,
-                        warmup=iter/5, control=control, algorithm=algorithm)
+                        warmup=iter/5, control=control, algorithm=algorithm,seed = 123)
 
 
 print( getEstimates(result) )

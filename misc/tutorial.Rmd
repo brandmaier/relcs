@@ -8,29 +8,34 @@ authors: Andreas M. Brandmaier, Rogier Kievit, & Ross Jacobucci
 
 In this tutorial, we are going to demonstrate the relcs package. Using relcs, you are able to easily specify random effects latent change score models that allow proportional change (or, self-feedback) to vary between persons. 
 
-First, download the package from GitHub and attach it to your workspace:
+First, download the package from GitHub and attach it to your workspace. Here we also load a couple of other libraries that will make our life less miserable.
 
-```{r init, eval=TRUE,echo=TRUE,message=FALSE}
+```{r init, eval=TRUE,echo=TRUE,message=FALSE,warning=FALSE}
 require("relcs")
-set.seed(54321)
+
+require("ggplot2")
+library("ggthemes")
+library(tidyr)
+
+set.seed(543231)
 ```
 
-Let's start with simulating some data from a latent change score model. Here, we assume proportional change (mean=.2) and individual differences in the proportional change (variance=.1). We assume no additional linear slope over time. Residual error variance is set to 2.
+Let's start with simulating some data from a latent change score model. Here, we assume proportional change (mean=.2) and individual differences in the proportional change (variance=.1). We assume no additional linear slope over time. Residual error variance is set to 1. There is some individual differences at the intercept (mu=5, variance=1).
 
 ```{r}
-N <- 200
+N <- 100
 num.obs <- 5
 
 simulated.data <- relcs::simulateDataFromRELCS(N,num.obs,selffeedback.mean = .2, 
-                                               selffeedback.variance = .1,has.slope = FALSE,
-                                               residualerrorvariance = 1)
+                                               selffeedback.variance = .05,has.slope = FALSE,
+                                               residualerrorvariance = 1,
+                                              interceptmu = 5, interceptvariance = 1)
 
 summary(simulated.data)
 ```
 
 Let's first create a long version of our simulated data set, which we will use for plotting shortly. The tidyr package is a great helper for this task.
 ```{r shape,message=FALSE}
-library(tidyr)
 simulated.data <- cbind(ID=rep(1:N), simulated.data)
 long.simulated.data <- gather(data = simulated.data,X,value,-ID)
 long.simulated.data$ID <- as.factor(long.simulated.data$ID)
@@ -39,8 +44,7 @@ long.simulated.data$ID <- as.factor(long.simulated.data$ID)
 We'll use the amazing ggplot2 library to plot the data
 
 ```{r plotstuff,message=FALSE}
-require("ggplot2")
-library("ggthemes")
+
 subdata <- long.simulated.data
 ggplot(data=subdata,aes(x=X,y=value,color=ID,group=ID))+geom_line()+   guides(colour=FALSE)+
   theme_fivethirtyeight()
@@ -48,10 +52,15 @@ ggplot(data=subdata,aes(x=X,y=value,color=ID,group=ID))+geom_line()+   guides(co
 
 Now, we will fit a RELCS model. Yes, this is really all you need to do:
 
-```{r run_model,echo=TRUE,eval=TRUE,message=FALSE,warning=FALSE}
-require(relcs)
+```{r echo=TRUE, eval=FALSE}
 fitted.model <- fitRELCS(data=simulated.data)
 ```
+
+```{r run_model,echo=FALSE,eval=TRUE,message=FALSE,warning=FALSE,results='hide'}
+fitted.model <- fitRELCS(data=simulated.data, iter=200, warmup=40)
+```
+
+
 
 Yes, it is as simple as that! Let's have a look at the parameter point estimates (here, the means of the posterior distribution):
 
@@ -76,10 +85,17 @@ missing.data <- miss.mat * simulated.data
 
 And again, we simply pass this data object to fitRELCS and it will handle the missing data appropriately:
 
-```{r run_model_missing, eval=TRUE,echo=FALSE,message=FALSE,warning=FALSE}
+```{r run_model_missing2, eval=FALSE,echo=TRUE,message=FALSE,warning=FALSE}
 require(relcs)
 fitted.model <- fitRELCS(data=missing.data, type="stan")
 ```
+
+
+```{r run_model_missing, eval=TRUE,echo=FALSE,message=FALSE,warning=FALSE,results='hide'}
+require(relcs)
+fitted.model <- fitRELCS(data=missing.data, type="stan")
+```
+
 
 Let's again check the estimates using print and plot:
 
