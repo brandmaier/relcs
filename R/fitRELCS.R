@@ -5,10 +5,10 @@ fitRELCS <- function( data, type="stan", has.slope=FALSE, ...) {
   
   if (type=="stan") {
     model <- fitRELCS.stan(data = data, num.obs = num.obs, has.slope=has.slope, ...)
-  } else if (type=="lavaan") {
-    model <- fitRELCS.lavaan(data = data, num.obs = num.obs, has.slope=has.slope, ...)
+  } else if (type=="openmx") {
+    model <- fitRELCS.openmx(data = data, num.obs = num.obs, has.slope=has.slope, ...)
   } else {
-    stop("Not implemented yet")
+    stop(paste0("Type",type," is not implemented, Try 'stan' or 'openmx'"))
   }
   
   return(model)
