@@ -73,22 +73,22 @@ Plot the first 20 simulated trajectories:
     #> 3 chains, each with iter=600; warmup=200; thin=1; 
     #> post-warmup draws per chain=400, total post-warmup draws=1200.
     #> 
-    #>                 mean se_mean    sd   2.5%    25%    50%    75%  97.5% n_eff
-    #> residual_var    0.10    0.00  0.01   0.09   0.10   0.10   0.11   0.11   228
-    #> self_fb_mu     -0.97    0.11  0.38  -1.68  -1.23  -0.97  -0.70  -0.25    12
-    #> self_fb_var     0.08    0.03  0.08   0.01   0.03   0.05   0.11   0.31     6
-    #> intercept_mu    0.03    0.01  0.03  -0.04   0.01   0.03   0.06   0.09    34
-    #> intercept_var   0.01    0.00  0.01   0.00   0.00   0.00   0.01   0.03    10
-    #> lp__          631.87   30.71 62.96 510.68 589.53 629.09 675.41 749.96     4
+    #>                 mean se_mean     sd   2.5%    25%    50%    75%   97.5% n_eff
+    #> residual_var    0.10    0.00   0.01   0.08   0.09   0.10   0.10    0.11    51
+    #> self_fb_mu     -0.93    0.38   0.56  -1.82  -1.36  -0.93  -0.44   -0.03     2
+    #> self_fb_var     0.03    0.02   0.05   0.00   0.00   0.01   0.04    0.19     9
+    #> intercept_mu    0.03    0.01   0.03  -0.02   0.01   0.03   0.05    0.09    21
+    #> intercept_var   0.01    0.00   0.01   0.00   0.00   0.00   0.01    0.03     5
+    #> lp__          817.25  139.56 186.93 538.94 668.82 778.50 982.37 1138.14     2
     #>               Rhat
-    #> residual_var  1.01
-    #> self_fb_mu    1.22
-    #> self_fb_var   1.27
-    #> intercept_mu  1.04
-    #> intercept_var 1.58
-    #> lp__          1.73
+    #> residual_var  1.05
+    #> self_fb_mu    2.86
+    #> self_fb_var   1.21
+    #> intercept_mu  1.28
+    #> intercept_var 1.40
+    #> lp__          2.74
     #> 
-    #> Samples were drawn using NUTS(diag_e) at Thu Mar 25 18:23:36 2021.
+    #> Samples were drawn using NUTS(diag_e) at Thu Mar 25 20:26:07 2021.
     #> For each parameter, n_eff is a crude measure of effective sample size,
     #> and Rhat is the potential scale reduction factor on split chains (at 
     #> convergence, Rhat=1).
@@ -111,7 +111,7 @@ Get the beta values from the model and obtain summary.
     betas <- get_beta_estimates(fit_with_beta)
     summary(betas)
     #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-    #> -0.7547 -0.7413 -0.7364 -0.7372 -0.7324 -0.7226
+    #> -0.8776 -0.8620 -0.8548 -0.8540 -0.8472 -0.8184
     hist(betas)
 
 ![](README_files/figure-markdown_strict/unnamed-chunk-9-1.png)
