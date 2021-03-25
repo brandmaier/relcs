@@ -14,19 +14,22 @@ Random Effects Latent Change Score models.
 
 ## Install
 
-Devel version from github
+Obtain the latest package version from github:
 
 ```{r eval=FALSE}
 install.packages("devtools")
 devtools::install_github("brandmaier/relcs")
 ```
 
-```{r}
+Load the `relcs` library:
+
+```{r warning=FALSE}
 library("relcs")
 ```
 
 ## How To Use
 
+The `relcs` package offers functions to simulate data (either from an OpenMx model or from specialized code) and to fit a model using either STAN or OpenMx.
 
 ### Simulation
 
@@ -39,8 +42,11 @@ library(ggplot2)
 
 simulated_data <- simulateDataFromRELCS(N = 100, 
                                         num.obs = 5, 
-                                        residualerrorvariance = .1,
+                                        residualerrorvariance = .01,
                                         selffeedback.mean = .5,
+                                        selffeedback.variance = .01,
+                                        interceptmu = 0,
+                                        interceptvariance = 1,
                                         has.slope=FALSE)
 ```
 
