@@ -60,7 +60,7 @@ simulated_data %>%
 
 ### model fit
 
-```{r}
+```{r warning=FALSE, echo=TRUE}
 fit <- fitRELCS(data = simulated_data, type="stan")
 
 fit$fit
@@ -73,8 +73,16 @@ hist(rstan::extract(fit$fit)$residual_var,main = "Residual Variance")
 ```
 ### Obtain individual beta estimates
 
-```{r}
+Re-fit the model with option `beta.as.parameter` which makes the person-specific parameters
+additional parameters, one for each person.
+
+```{r warning=FALSE}
 fit_with_beta <- fitRELCS(data = simulated_data, type="stan",beta.as.parameter = TRUE)
+```
+
+Get the beta values from the model and obtain summary.
+
+```{r warning=FALSE}
 betas <- get_beta_estimates(fit_with_beta)
 summary(betas)
 hist(betas)

@@ -67,20 +67,6 @@ Plot the first 20 simulated trajectories:
 ### model fit
 
     fit <- fitRELCS(data = simulated_data, type="stan")
-    #> Warning: There were 99 divergent transitions after warmup. Increasing adapt_delta above 0.8 may help. See
-    #> http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
-    #> Warning: There were 3 chains where the estimated Bayesian Fraction of Missing Information was low. See
-    #> http://mc-stan.org/misc/warnings.html#bfmi-low
-    #> Warning: Examine the pairs() plot to diagnose sampling problems
-    #> Warning: The largest R-hat is 1.86, indicating chains have not mixed.
-    #> Running the chains for more iterations may help. See
-    #> http://mc-stan.org/misc/warnings.html#r-hat
-    #> Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
-    #> Running the chains for more iterations may help. See
-    #> http://mc-stan.org/misc/warnings.html#bulk-ess
-    #> Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
-    #> Running the chains for more iterations may help. See
-    #> http://mc-stan.org/misc/warnings.html#tail-ess
 
     fit$fit
     #> Inference for Stan model: f5c4092c36946657ffd2b8726c04f9d6.
@@ -88,21 +74,21 @@ Plot the first 20 simulated trajectories:
     #> post-warmup draws per chain=400, total post-warmup draws=1200.
     #> 
     #>                 mean se_mean    sd   2.5%    25%    50%    75%  97.5% n_eff
-    #> residual_var    0.09    0.00  0.01   0.08   0.08   0.09   0.09   0.10   143
-    #> self_fb_mu     -0.39    0.19  0.42  -1.29  -0.61  -0.37  -0.14   0.37     5
-    #> self_fb_var     0.06    0.01  0.07   0.01   0.02   0.04   0.08   0.28    27
-    #> intercept_mu    0.00    0.01  0.02  -0.04  -0.01   0.00   0.02   0.05    21
-    #> intercept_var   0.00    0.00  0.01   0.00   0.00   0.00   0.01   0.02    10
-    #> lp__          729.22   32.62 75.18 584.59 676.14 719.36 792.65 859.51     5
+    #> residual_var    0.10    0.00  0.01   0.09   0.10   0.10   0.11   0.11   228
+    #> self_fb_mu     -0.97    0.11  0.38  -1.68  -1.23  -0.97  -0.70  -0.25    12
+    #> self_fb_var     0.08    0.03  0.08   0.01   0.03   0.05   0.11   0.31     6
+    #> intercept_mu    0.03    0.01  0.03  -0.04   0.01   0.03   0.06   0.09    34
+    #> intercept_var   0.01    0.00  0.01   0.00   0.00   0.00   0.01   0.03    10
+    #> lp__          631.87   30.71 62.96 510.68 589.53 629.09 675.41 749.96     4
     #>               Rhat
-    #> residual_var  1.04
-    #> self_fb_mu    1.84
-    #> self_fb_var   1.12
-    #> intercept_mu  1.11
-    #> intercept_var 1.21
-    #> lp__          1.61
+    #> residual_var  1.01
+    #> self_fb_mu    1.22
+    #> self_fb_var   1.27
+    #> intercept_mu  1.04
+    #> intercept_var 1.58
+    #> lp__          1.73
     #> 
-    #> Samples were drawn using NUTS(diag_e) at Thu Mar 25 18:18:29 2021.
+    #> Samples were drawn using NUTS(diag_e) at Thu Mar 25 18:23:36 2021.
     #> For each parameter, n_eff is a crude measure of effective sample size,
     #> and Rhat is the potential scale reduction factor on split chains (at 
     #> convergence, Rhat=1).
@@ -114,29 +100,21 @@ Plot the first 20 simulated trajectories:
 ![](README_files/figure-markdown_strict/unnamed-chunk-7-1.png) \#\#\#
 Obtain individual beta estimates
 
+Re-fit the model with option `beta.as.parameter` which makes the
+person-specific parameters additional parameters, one for each person.
+
     fit_with_beta <- fitRELCS(data = simulated_data, type="stan",beta.as.parameter = TRUE)
     #> recompiling to avoid crashing R session
-    #> Warning: There were 29 divergent transitions after warmup. Increasing adapt_delta above 0.8 may help. See
-    #> http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
-    #> Warning: There were 3 chains where the estimated Bayesian Fraction of Missing Information was low. See
-    #> http://mc-stan.org/misc/warnings.html#bfmi-low
-    #> Warning: Examine the pairs() plot to diagnose sampling problems
-    #> Warning: The largest R-hat is 2, indicating chains have not mixed.
-    #> Running the chains for more iterations may help. See
-    #> http://mc-stan.org/misc/warnings.html#r-hat
-    #> Warning: Bulk Effective Samples Size (ESS) is too low, indicating posterior means and medians may be unreliable.
-    #> Running the chains for more iterations may help. See
-    #> http://mc-stan.org/misc/warnings.html#bulk-ess
-    #> Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.
-    #> Running the chains for more iterations may help. See
-    #> http://mc-stan.org/misc/warnings.html#tail-ess
+
+Get the beta values from the model and obtain summary.
+
     betas <- get_beta_estimates(fit_with_beta)
     summary(betas)
     #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-    #> -0.8235 -0.8027 -0.7970 -0.7961 -0.7897 -0.7616
+    #> -0.7547 -0.7413 -0.7364 -0.7372 -0.7324 -0.7226
     hist(betas)
 
-![](README_files/figure-markdown_strict/unnamed-chunk-8-1.png)
+![](README_files/figure-markdown_strict/unnamed-chunk-9-1.png)
 
 ### inspect STAN code
 
