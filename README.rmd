@@ -42,7 +42,7 @@ library(ggplot2)
 
 simulated_data <- simulateDataFromRELCS(N = 100, 
                                         num.obs = 5, 
-                                        residualerrorvariance = .01,
+                                        residualerrorvariance = .3,
                                         selffeedback.mean = .5,
                                         selffeedback.variance = .01,
                                         interceptmu = 0,

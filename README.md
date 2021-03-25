@@ -47,7 +47,7 @@ Simulate 100 cases from a RELCS model:
 
     simulated_data <- simulateDataFromRELCS(N = 100, 
                                             num.obs = 5, 
-                                            residualerrorvariance = .01,
+                                            residualerrorvariance = .3,
                                             selffeedback.mean = .5,
                                             selffeedback.variance = .01,
                                             interceptmu = 0,
@@ -80,22 +80,22 @@ Plot the first 20 simulated trajectories:
     #> 3 chains, each with iter=600; warmup=200; thin=1; 
     #> post-warmup draws per chain=400, total post-warmup draws=1200.
     #> 
-    #>                 mean se_mean     sd    2.5%     25%    50%    75%   97.5% n_eff
-    #> residual_var    0.29    0.17   0.21    0.01    0.01   0.37   0.47    0.56     2
-    #> self_fb_mu      0.40    0.08   0.12    0.18    0.31   0.41   0.52    0.54     2
-    #> self_fb_var     0.36    0.23   0.29    0.01    0.01   0.37   0.59    0.90     2
-    #> intercept_mu   -0.01    0.01   0.10   -0.21   -0.07   0.00   0.06    0.19   113
-    #> intercept_var   0.90    0.00   0.13    0.66    0.81   0.90   0.99    1.19   884
-    #> lp__          266.76  422.47 517.85 -173.02 -144.81 -42.08 987.94 1012.65     2
-    #>                Rhat
-    #> residual_var   7.28
-    #> self_fb_mu     1.97
-    #> self_fb_var    3.40
-    #> intercept_mu   1.03
-    #> intercept_var  1.01
-    #> lp__          45.62
+    #>                 mean se_mean    sd   2.5%    25%    50%    75%  97.5% n_eff
+    #> residual_var    0.31    0.00  0.02   0.26   0.29   0.31   0.32   0.36   773
+    #> self_fb_mu      0.47    0.00  0.02   0.43   0.46   0.47   0.48   0.51   716
+    #> self_fb_var     0.02    0.00  0.01   0.01   0.01   0.01   0.02   0.03   301
+    #> intercept_mu   -0.02    0.00  0.11  -0.24  -0.09  -0.02   0.05   0.19  1991
+    #> intercept_var   1.19    0.00  0.18   0.88   1.06   1.18   1.30   1.57  1440
+    #> lp__          146.10    0.94 15.57 115.61 135.77 146.27 156.99 175.49   274
+    #>               Rhat
+    #> residual_var  1.00
+    #> self_fb_mu    1.00
+    #> self_fb_var   1.00
+    #> intercept_mu  1.00
+    #> intercept_var 1.00
+    #> lp__          1.01
     #> 
-    #> Samples were drawn using NUTS(diag_e) at Thu Mar 25 20:53:24 2021.
+    #> Samples were drawn using NUTS(diag_e) at Thu Mar 25 20:58:47 2021.
     #> For each parameter, n_eff is a crude measure of effective sample size,
     #> and Rhat is the potential scale reduction factor on split chains (at 
     #> convergence, Rhat=1).
@@ -118,7 +118,7 @@ Get the beta values from the model and obtain summary.
     betas <- get_beta_estimates(fit_with_beta)
     summary(betas)
     #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-    #> -1.1211  0.3450  0.4962  0.4081  0.5780  0.8116
+    #> -1.1540  0.3194  0.4504  0.4202  0.5352  0.7139
     hist(betas)
 
 ![](README_files/figure-markdown_strict/unnamed-chunk-9-1.png)
