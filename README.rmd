@@ -8,11 +8,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-### What is this?
+## What is this?
 
 Random Effects Latent Change Score models.
 
-### Install
+## Install
 
 Devel version from github
 
@@ -23,4 +23,65 @@ devtools::install_github("brandmaier/relcs")
 
 ```{r}
 library("relcs")
+```
+
+## How To Use
+
+
+### Simulation
+
+Simulate 100 cases from a RELCS model:
+
+```{r message=FALSE}
+library(relcs)
+library(tidyverse)
+library(ggplot2)
+
+simulated_data <- simulateDataFromRELCS(N = 100, 
+                                        num.obs = 5, 
+                                        residualerrorvariance = .1,
+                                        selffeedback.mean = .5,
+                                        has.slope=FALSE)
+```
+
+Plot the first 20 simulated trajectories:
+
+```{r}
+simulated_data %>% 
+  mutate(id=1:nrow(simulated_data)) %>% 
+  filter(id < 20) %>%
+  pivot_longer(-id) %>%
+  ggplot(aes(x=name,y=value,group=id,color=factor(id)))+
+  geom_line()+
+  theme_minimal()+
+  xlab("Time")+ylab("Value")+
+  ggx::gg_("hide legend")
+```
+
+### model fit
+
+```{r}
+fit <- fitRELCS(data = simulated_data, type="stan")
+
+fit$fit
+```
+
+### visually inspect model posteriors
+
+```{r}
+hist(rstan::extract(fit$fit)$residual_var,main = "Residual Variance")
+```
+### Obtain individual beta estimates
+
+```{r}
+fit_with_beta <- fitRELCS(data = simulated_data, type="stan",beta.as.parameter = TRUE)
+betas <- get_beta_estimates(fit_with_beta)
+summary(betas)
+hist(betas)
+```
+
+### inspect STAN code
+
+```{r}
+cat(fit$code)
 ```

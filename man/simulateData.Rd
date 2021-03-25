@@ -9,4 +9,3 @@ simulateData(model, N)
 \description{
 simulate data from model implied distribution
 }
-

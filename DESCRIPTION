@@ -14,4 +14,4 @@ Depends:
     OpenMx,
     rstan,
     ggplot2
-RoxygenNote: 5.0.1
+RoxygenNote: 7.1.1

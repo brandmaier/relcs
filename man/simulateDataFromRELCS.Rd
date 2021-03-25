@@ -4,13 +4,22 @@
 \alias{simulateDataFromRELCS}
 \title{Simulate Data from RELCS model}
 \usage{
-simulateDataFromRELCS(N, num.obs, selffeedback.mean = 0.3,
-  selffeedback.variance = 0.1, residualerrorvariance = 0.1,
-  slopevariance = 0, slopemu = 0, interceptvariance = 0.1,
-  interceptmu = 4, has.slope = TRUE, has.icept = TRUE,
-  use.openmx = FALSE)
+simulateDataFromRELCS(
+  N,
+  num.obs,
+  selffeedback.mean = 0,
+  selffeedback.variance = 0,
+  residualerrorvariance = 1,
+  slopevariance = 0,
+  slopemu = 0,
+  interceptvariance = 0,
+  interceptmu = 0,
+  has.slope = TRUE,
+  has.icept = TRUE,
+  use.openmx = FALSE,
+  return.true.fb = FALSE
+)
 }
 \description{
 Simulate Data from RELCS model
 }
-

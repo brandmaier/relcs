@@ -9,4 +9,3 @@ fit(model, data, type = "raw")
 \description{
 Fit data and model
 }
-

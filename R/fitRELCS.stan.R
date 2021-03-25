@@ -9,7 +9,7 @@ create_default_priors <- function() {
 fitRELCS.stan <- function(num.obs, data, cores=3, chains=3, iter=600, algorithm="NUTS",
                           seed=sample.int(.Machine$integer.max, 1), warmup=200, control=NULL,
                           priors=create_default_priors(), no.run=FALSE, has.slope=FALSE, 
-                          pred.sfb.data=NULL,...)
+                          pred.sfb.data=NULL, beta.as.parameter=FALSE,...)
 {
   
 pred.sfb <- ""
@@ -107,7 +107,7 @@ pkg.globals$SELF_FEEDBACK_FE," ~ ",priors$sfb_mean,";  // prior for self-feedbac
 for (i in 1:N){
 
  intt[i] ~ normal(",pkg.globals$INTERCEPT_FE,", pow(",pkg.globals$INTERCEPT_RE,",0.5));
- beta[i] ~ normal(",pkg.globals$SELF_FEEDBACK_FE,pred_sfb,", pow(",pkg.globals$SELF_FEEDBACK_RE,",0.5));
+ beta[i] ~ normal(",pkg.globals$SELF_FEEDBACK_FE,pred.sfb,", pow(",pkg.globals$SELF_FEEDBACK_RE,",0.5));
  X[i,1] ~ normal(mu[i,1],pow(",pkg.globals$RESIDUAL_ERROR,",0.5));
 
 
@@ -144,9 +144,16 @@ stan.data <- list(N = nrow(data),
 if (no.run) {
  lcs.out <- NULL 
 } else {
+  pars <- c(pkg.globals$RESIDUAL_ERROR,
+            pkg.globals$SELF_FEEDBACK_FE,
+            pkg.globals$SELF_FEEDBACK_RE,
+            pkg.globals$INTERCEPT_FE,
+            pkg.globals$INTERCEPT_RE
+            )
+  if (beta.as.parameter) { pars <- c(pars, "beta") }
   lcs.out=stan(model_code=relcs.stan,iter=iter,seed=seed, warmup = warmup, algorithm=algorithm,
              data = stan.data,chains=chains,cores=cores,control=control,
-             pars=c(pkg.globals$RESIDUAL_ERROR,pkg.globals$SELF_FEEDBACK_FE,pkg.globals$SELF_FEEDBACK_RE,pkg.globals$INTERCEPT_FE,pkg.globals$INTERCEPT_RE))
+             pars=pars)
 }
 
 result <- list()
