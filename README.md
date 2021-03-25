@@ -9,10 +9,12 @@ Random Effects Latent Change Score models.
 Install
 -------
 
-Devel version from github
+Obtain the latest package version from github:
 
     install.packages("devtools")
     devtools::install_github("brandmaier/relcs")
+
+Load the `relcs` library:
 
     library("relcs")
     #> Loading required package: parallel
@@ -22,8 +24,6 @@ Devel version from github
     #> Loading required package: rstan
     #> Loading required package: StanHeaders
     #> Loading required package: ggplot2
-    #> Warning: replacing previous import 'vctrs::data_frame' by 'tibble::data_frame'
-    #> when loading 'dplyr'
     #> rstan (Version 2.19.3, GitRev: 2e1f913d3ca3)
     #> For execution on a local, multicore CPU with excess RAM we recommend calling
     #> options(mc.cores = parallel::detectCores()).
@@ -32,6 +32,10 @@ Devel version from github
 
 How To Use
 ----------
+
+The `relcs` package offers functions to simulate data (either from an
+OpenMx model or from specialized code) and to fit a model using either
+STAN or OpenMx.
 
 ### Simulation
 
@@ -76,22 +80,22 @@ Plot the first 20 simulated trajectories:
     #> 3 chains, each with iter=600; warmup=200; thin=1; 
     #> post-warmup draws per chain=400, total post-warmup draws=1200.
     #> 
-    #>                  mean se_mean    sd   2.5%     25%     50%     75%   97.5%
-    #> residual_var     0.01    0.00  0.00   0.01    0.01    0.01    0.01    0.01
-    #> self_fb_mu       0.51    0.00  0.01   0.48    0.50    0.51    0.51    0.53
-    #> self_fb_var      0.01    0.00  0.00   0.01    0.01    0.01    0.01    0.01
-    #> intercept_mu     0.02    0.00  0.10  -0.18   -0.06    0.02    0.09    0.22
-    #> intercept_var    1.12    0.00  0.14   0.86    1.02    1.12    1.21    1.42
-    #> lp__          1013.37    0.65 12.10 988.14 1005.33 1013.90 1021.96 1035.02
-    #>               n_eff Rhat
-    #> residual_var    672 1.00
-    #> self_fb_mu     1480 1.00
-    #> self_fb_var     737 1.01
-    #> intercept_mu   1396 1.00
-    #> intercept_var  1556 1.00
-    #> lp__            348 1.00
+    #>                 mean se_mean     sd    2.5%     25%    50%    75%   97.5% n_eff
+    #> residual_var    0.29    0.17   0.21    0.01    0.01   0.37   0.47    0.56     2
+    #> self_fb_mu      0.40    0.08   0.12    0.18    0.31   0.41   0.52    0.54     2
+    #> self_fb_var     0.36    0.23   0.29    0.01    0.01   0.37   0.59    0.90     2
+    #> intercept_mu   -0.01    0.01   0.10   -0.21   -0.07   0.00   0.06    0.19   113
+    #> intercept_var   0.90    0.00   0.13    0.66    0.81   0.90   0.99    1.19   884
+    #> lp__          266.76  422.47 517.85 -173.02 -144.81 -42.08 987.94 1012.65     2
+    #>                Rhat
+    #> residual_var   7.28
+    #> self_fb_mu     1.97
+    #> self_fb_var    3.40
+    #> intercept_mu   1.03
+    #> intercept_var  1.01
+    #> lp__          45.62
     #> 
-    #> Samples were drawn using NUTS(diag_e) at Thu Mar 25 20:49:04 2021.
+    #> Samples were drawn using NUTS(diag_e) at Thu Mar 25 20:53:24 2021.
     #> For each parameter, n_eff is a crude measure of effective sample size,
     #> and Rhat is the potential scale reduction factor on split chains (at 
     #> convergence, Rhat=1).
@@ -114,7 +118,7 @@ Get the beta values from the model and obtain summary.
     betas <- get_beta_estimates(fit_with_beta)
     summary(betas)
     #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-    #>  0.2056  0.4603  0.5034  0.5051  0.5626  0.7720
+    #> -1.1211  0.3450  0.4962  0.4081  0.5780  0.8116
     hist(betas)
 
 ![](README_files/figure-markdown_strict/unnamed-chunk-9-1.png)
